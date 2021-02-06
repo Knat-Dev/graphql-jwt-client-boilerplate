@@ -10,6 +10,7 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
+import { ChakraProvider, Flex, Spinner } from '@chakra-ui/react';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import jwtDecode from 'jwt-decode';
 import React, { FC, useEffect, useState } from 'react';
@@ -17,11 +18,11 @@ import ReactDOM from 'react-dom';
 import { AuthContextProvider, useAuthContext } from './context';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Router from './Router';
+import Router from './router/Router';
 import { getAccessToken, setAccessToken } from './utils';
 
 const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_API + '/graphql',
+  uri: process.env.REACT_APP_API + '/api',
   credentials: 'include',
 });
 
@@ -121,18 +122,23 @@ const App: FC = () => {
       });
   }, [setAuthState]);
 
-  if (loading) return null;
-  return (
-    <ApolloProvider client={client}>
-      <Router />
-    </ApolloProvider>
-  );
+  if (loading)
+    return (
+      <Flex h="100vh" justify="center" align="center">
+        <Spinner size="xl" color="purple" />
+      </Flex>
+    );
+  return <Router />;
 };
 
 ReactDOM.render(
-  <AuthContextProvider>
-    <App />
-  </AuthContextProvider>,
+  <ApolloProvider client={client}>
+    <AuthContextProvider>
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
+    </AuthContextProvider>
+  </ApolloProvider>,
   document.getElementById('root')
 );
 

@@ -16,6 +16,7 @@
     "@types/react-dom": "^17.0.0",
     "apollo-link-token-refresh": "^0.3.2",
     "apollo-link-ws": "^1.0.20",
+    "formik": "^2.2.6",
     "framer-motion": "^3.3.0",
     "graphql": "^15.5.0",
     "jwt-decode": "^3.1.2",
@@ -31,7 +32,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "gen": "graphql-codegen --config codegen.yml"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +54,10 @@
     ]
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.20.1",
+    "@graphql-codegen/typescript": "1.20.2",
+    "@graphql-codegen/typescript-operations": "^1.17.14",
+    "@graphql-codegen/typescript-react-apollo": "2.2.1",
     "@types/jwt-decode": "^3.1.0",
     "@types/react-router-dom": "^5.1.7"
   }
