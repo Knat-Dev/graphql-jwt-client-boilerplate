@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { Index, Login, Register } from '../../pages';
 import { PrivateRoute, PublicRoute } from '../utils';

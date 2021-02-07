@@ -15,7 +15,11 @@ import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import jwtDecode from 'jwt-decode';
 import React, { FC, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { AuthContextProvider, useAuthContext } from './context';
+import {
+  AuthContextProvider,
+  SocketContextProvider,
+  useAuthContext,
+} from './context';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Router from './router/Router';
@@ -52,7 +56,7 @@ const tokenRefreshLink = new TokenRefreshLink({
     }
   },
   fetchAccessToken: async (): Promise<Response> => {
-    return fetch(`${process.env.REACT_APP_REFRESH_URL}`, {
+    return fetch(`${process.env.REACT_APP_API}/refresh`, {
       credentials: 'include',
       method: 'POST',
     });
@@ -132,13 +136,15 @@ const App: FC = () => {
 };
 
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <AuthContextProvider>
-      <ChakraProvider>
-        <App />
-      </ChakraProvider>
-    </AuthContextProvider>
-  </ApolloProvider>,
+  <SocketContextProvider>
+    <ApolloProvider client={client}>
+      <AuthContextProvider>
+        <ChakraProvider>
+          <App />
+        </ChakraProvider>
+      </AuthContextProvider>
+    </ApolloProvider>
+  </SocketContextProvider>,
   document.getElementById('root')
 );
 

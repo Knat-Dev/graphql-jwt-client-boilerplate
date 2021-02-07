@@ -1,11 +1,19 @@
 import { Button, Flex, Text } from '@chakra-ui/react';
-import React from 'react';
-import { useAuthContext } from '../../context';
+import React, { useEffect } from 'react';
+import { useAuthContext, useSocketContext } from '../../context';
 import { useLogoutMutation } from '../../graphql/generated';
 
 export const Index = () => {
   const [logout, { loading }] = useLogoutMutation();
   const [, setAuthState] = useAuthContext();
+  const [socket] = useSocketContext();
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('welcome', (msg: string) => console.log(msg));
+    }
+  }, [socket]);
+
   return (
     <Flex
       h="48px"
