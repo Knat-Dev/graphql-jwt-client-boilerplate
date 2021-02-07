@@ -1,5 +1,5 @@
 import { Button, Flex, Text } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useAuthContext, useSocketContext } from '../../context';
 import { useLogoutMutation } from '../../graphql/generated';
 
@@ -8,10 +8,22 @@ export const Index = () => {
   const [, setAuthState] = useAuthContext();
   const [socket] = useSocketContext();
 
-  useEffect(() => {
+  // Handle page refresh while connected to socket
+  const onRefreshedPage = useCallback(() => {
     if (socket) {
-      socket.on('welcome', (msg: string) => console.log(msg));
+      socket.emit('refresh_page');
+      socket.disconnect();
     }
+  }, [socket]);
+  useEffect(() => {
+    window.addEventListener('beforeunload', onRefreshedPage);
+    return () => {
+      window.removeEventListener('beforeunload', onRefreshedPage);
+    };
+  }, [onRefreshedPage]);
+
+  useEffect(() => {
+    socket?.on('welcome', (msg: string) => console.log(msg));
   }, [socket]);
 
   return (

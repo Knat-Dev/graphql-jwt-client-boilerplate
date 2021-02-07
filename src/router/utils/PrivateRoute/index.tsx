@@ -12,11 +12,10 @@ export const PrivateRoute: FC<RouteProps> = (props) => {
       setSocket(null);
       socket?.disconnect();
     }
-  }, [socket, authState.loggedIn, setSocket]);
+  }, [socket, authState, setSocket]);
 
   if (!authState.loggedIn) {
     const Component = () => <Redirect to="/login" />;
-
     return <Route {...props} component={Component} />;
   }
   return <Route {...props} />;
